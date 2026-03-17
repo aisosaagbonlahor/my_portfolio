@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Aisosa Agbonlahor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:#0c0c14;--ink-soft:#1a1a28;--ink-card:#14141f;
+      --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);
+      --border:rgba(255,255,255,0.08);--border-hi:rgba(255,255,255,0.16);
+      --text:#eeeef5;--text-2:#9090b0;--text-3:#5a5a75;
+      --gold:#e8c97d;--teal:#4dd9c0;
+      --nav-blur:rgba(12,12,20,0.9);
+      --r:14px;--r-lg:20px;--ease:cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="light"]{
+      --ink:#f4f4fc;--ink-soft:#e8e8f5;--ink-card:#ffffff;
+      --glass:rgba(0,0,0,0.03);--glass2:rgba(0,0,0,0.05);
+      --border:rgba(0,0,0,0.08);--border-hi:rgba(0,0,0,0.15);
+      --text:#0c0c14;--text-2:#4a4a65;--text-3:#9090aa;
+      --nav-blur:rgba(244,244,252,0.92);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--text);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s;}
+    a{text-decoration:none;color:inherit;}
+    ul{list-style:none;}
+
+    /* grain */
+    body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;
+      background:var(--nav-blur);backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;padding:0 clamp(1.5rem,5vw,4rem);gap:2rem;
+      transition:background .4s;}
+    .nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;color:var(--gold);flex-shrink:0;}
+    .nav-back{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:500;letter-spacing:.06em;color:var(--text-2);transition:color .25s;margin-left:auto;}
+    .nav-back:hover{color:var(--gold);}
+    .nav-back svg{width:16px;height:16px;}
+    .nav-actions{display:flex;align-items:center;gap:.75rem;}
+    #theme-btn{background:var(--glass2);border:1px solid var(--border);border-radius:50px;padding:5px 14px 5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text-2);font-size:.8rem;font-family:inherit;transition:border-color .2s,color .2s;}
+    #theme-btn:hover{border-color:var(--gold);color:var(--text);}
+
+    /* HELPERS */
+    .wrap{max-width:860px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+    .gold{color:var(--gold);}
+    .teal{color:var(--teal);}
+    .display{font-family:'Playfair Display',serif;font-weight:800;line-height:1.1;letter-spacing:-.025em;}
+
+    /* SIDEBAR NAV */
+    .page-layout{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:0;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 clamp(1.5rem,5vw,4rem);
+      padding-top:88px;
+    }
+    .sidebar{
+      position:sticky;top:88px;height:fit-content;
+      padding-right:2rem;
+      padding-bottom:4rem;
+    }
+    .sidebar-label{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:1rem;}
+    .sidebar-group{margin-bottom:1.5rem;}
+    .sidebar-cat{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;padding-left:.75rem;border-left:2px solid var(--gold);}
+    .sidebar-link{display:block;font-size:.8rem;color:var(--text-2);padding:.35rem .75rem;border-left:2px solid var(--border);transition:all .2s;line-height:1.4;}
+    .sidebar-link:hover{color:var(--text);border-left-color:var(--text-3);}
+    .sidebar-link.active{color:var(--gold);border-left-color:var(--gold);font-weight:600;}
+
+    /* MAIN CONTENT */
+    .main-content{padding-bottom:6rem;border-left:1px solid var(--border);padding-left:3rem;}
+
+    /* PAGE HEADER */
+    .page-header{padding:2rem 0 3.5rem;}
+    .page-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+    .page-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);}
+    .page-header h1{font-size:clamp(2.2rem,4vw,3.2rem);margin-bottom:.75rem;}
+    .page-header p{color:var(--text-2);font-size:1rem;max-width:520px;}
+
+    /* PROJECT ENTRY */
+    .project-entry{
+      padding:3rem 0;
+      border-bottom:1px solid var(--border);
+      scroll-margin-top:88px;
+    }
+    .project-entry:last-child{border-bottom:none;}
+
+    .entry-header{display:flex;align-items:flex-start;gap:1.5rem;margin-bottom:2rem;flex-wrap:wrap;}
+    .entry-icon{
+      width:64px;height:64px;border-radius:var(--r);flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      font-size:2rem;border:1px solid var(--border);
+    }
+    .entry-meta{flex:1;}
+    .entry-cat{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:.4rem;}
+    .entry-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;line-height:1.2;margin-bottom:.6rem;}
+    .entry-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .e-tag{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(77,217,192,.1);border:1px solid rgba(77,217,192,.2);color:var(--teal);}
+
+    .entry-overview{color:var(--text-2);font-size:1rem;line-height:1.85;margin-bottom:2rem;}
+
+    .entry-section-title{
+      font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--gold);margin-bottom:1rem;
+      display:flex;align-items:center;gap:10px;
+    }
+    .entry-section-title::before{content:'';width:20px;height:1px;background:var(--gold);}
+
+    .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.75rem;margin-bottom:2rem;}
+    .feature-card{
+      background:var(--ink-card);border:1px solid var(--border);
+      border-radius:var(--r);padding:1.1rem 1.2rem;
+    }
+    .feature-card:hover{border-color:rgba(232,201,125,.25);}
+    .feature-num{font-family:'Playfair Display',serif;font-size:.75rem;font-weight:700;color:var(--gold);margin-bottom:.35rem;}
+    .feature-text{font-size:.85rem;color:var(--text-2);line-height:1.55;}
+    .feature-text strong{color:var(--text);display:block;margin-bottom:.2rem;}
+
+    .outcome-bar{
+      background:var(--ink-card);border:1px solid var(--border);
+      border-left:3px solid var(--gold);
+      border-radius:var(--r);padding:1.2rem 1.5rem;
+      font-size:.9rem;color:var(--text-2);line-height:1.7;
+      margin-bottom:2rem;
+    }
+    .outcome-bar strong{color:var(--text);}
+
+    .entry-actions{display:flex;gap:.75rem;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:50px;font-size:.82rem;font-weight:600;letter-spacing:.04em;cursor:pointer;border:none;transition:all .3s var(--ease);}
+    .btn-gold{background:var(--gold);color:#0c0c14;box-shadow:0 4px 20px rgba(232,201,125,.2);}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,201,125,.35);}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi);}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+
+    /* Category divider */
+    .cat-section-header{
+      display:flex;align-items:center;gap:1.5rem;
+      padding:2.5rem 0 .5rem;
+    }
+    .cat-section-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;white-space:nowrap;}
+    .cat-section-line{flex:1;height:1px;background:var(--border);}
+
+
+
+
+    /* GALLERY */
+    .gallery-section{margin-bottom:2rem;}
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;}
+    .gallery-item{
+      position:relative;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;
+      background:var(--ink-card);border:1px solid var(--border);cursor:pointer;
+      transition:all .3s var(--ease);
+    }
+    .gallery-item:hover{border-color:rgba(232,201,125,.4);transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.35);}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--ease);}
+    .gallery-item:hover img{transform:scale(1.04);}
+    .gallery-item .gallery-overlay{
+      position:absolute;inset:0;background:rgba(12,12,20,.0);
+      display:flex;align-items:center;justify-content:center;
+      transition:background .3s;
+    }
+    .gallery-item:hover .gallery-overlay{background:rgba(12,12,20,.3);}
+    .gallery-overlay svg{opacity:0;transform:scale(0.7);transition:all .3s var(--ease);color:#fff;}
+    .gallery-item:hover .gallery-overlay svg{opacity:1;transform:scale(1);}
+    .gallery-empty{
+      border:1.5px dashed var(--border-hi);border-radius:var(--r);
+      padding:2rem;text-align:center;color:var(--text-3);font-size:.82rem;
+    }
+    .gallery-empty label{color:var(--gold);cursor:pointer;font-weight:600;}
+    .gallery-empty label:hover{text-decoration:underline;}
+    .gallery-add-btn{
+      aspect-ratio:16/10;border-radius:var(--r);
+      border:1.5px dashed var(--border-hi);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:.5rem;cursor:pointer;transition:all .3s var(--ease);
+      color:var(--text-3);font-size:.78rem;font-weight:500;
+      background:transparent;
+    }
+    .gallery-add-btn:hover{border-color:var(--gold);color:var(--gold);}
+    .gallery-add-btn svg{width:22px;height:22px;}
+
+    /* LIGHTBOX */
+    .lightbox{
+      position:fixed;inset:0;z-index:1000;
+      background:rgba(0,0,0,.92);backdrop-filter:blur(16px);
+      display:none;align-items:center;justify-content:center;
+      padding:2rem;
+    }
+    .lightbox.open{display:flex;}
+    .lightbox-img{
+      max-width:90vw;max-height:85vh;
+      border-radius:var(--r-lg);object-fit:contain;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+    }
+    .lightbox-close{
+      position:absolute;top:1.5rem;right:1.5rem;
+      width:44px;height:44px;border-radius:50%;
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+      color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .lightbox-close:hover{background:rgba(255,255,255,.2);}
+    .lightbox-prev,.lightbox-next{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:44px;height:44px;border-radius:50%;
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+      color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .lightbox-prev{left:1.5rem;}
+    .lightbox-next{right:1.5rem;}
+    .lightbox-prev:hover,.lightbox-next:hover{background:rgba(255,255,255,.2);}
+    .lightbox-counter{
+      position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);
+      font-size:.75rem;color:rgba(255,255,255,.5);letter-spacing:.1em;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:800px){
+      .page-layout{grid-template-columns:1fr;padding-top:80px;}
+      .sidebar{display:none;}
+      .main-content{border-left:none;padding-left:0;}
+    }
+
+    /* ═══════════════════════════════
+       GALLERY
+    ═══════════════════════════════ */
+    .gallery-section{margin-bottom:2rem;}
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:.75rem;
+      margin-top:.75rem;
+    }
+    .gallery-item{
+      position:relative;aspect-ratio:16/10;
+      border-radius:var(--r);overflow:hidden;
+      background:var(--ink-card);border:1px solid var(--border);
+      cursor:pointer;transition:transform .25s var(--ease),border-color .25s;
+    }
+    .gallery-item:hover{transform:scale(1.03);border-color:rgba(232,201,125,.4);}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+    .gallery-placeholder{
+      width:100%;height:100%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:.4rem;color:var(--text-3);font-size:.75rem;letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .gallery-placeholder svg{width:28px;height:28px;opacity:.4;}
+    .gallery-add-btn{
+      aspect-ratio:16/10;border-radius:var(--r);
+      border:1.5px dashed var(--border-hi);
+      background:transparent;cursor:pointer;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:.5rem;color:var(--text-3);font-size:.75rem;font-family:inherit;
+      letter-spacing:.06em;text-transform:uppercase;
+      transition:border-color .25s,color .25s,background .25s;
+    }
+    .gallery-add-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(232,201,125,.04);}
+    .gallery-add-btn svg{width:22px;height:22px;}
+
+    /* ── Lightbox ── */
+    .lightbox{
+      position:fixed;inset:0;z-index:1000;
+      background:rgba(0,0,0,.92);backdrop-filter:blur(12px);
+      display:none;align-items:center;justify-content:center;
+    }
+    .lightbox.open{display:flex;}
+    .lightbox-img{
+      max-width:90vw;max-height:88vh;
+      border-radius:var(--r-lg);object-fit:contain;
+      box-shadow:0 32px 80px rgba(0,0,0,.6);
+    }
+    .lightbox-close{
+      position:absolute;top:1.25rem;right:1.5rem;
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+      border-radius:50%;width:40px;height:40px;
+      cursor:pointer;color:#fff;font-size:1.2rem;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .lightbox-close:hover{background:rgba(255,255,255,.2);}
+    .lightbox-nav{
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+      border-radius:50%;width:44px;height:44px;
+      cursor:pointer;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .2s;
+    }
+    .lightbox-nav:hover{background:rgba(255,255,255,.2);}
+    .lightbox-prev{left:1.25rem;}
+    .lightbox-next{right:1.25rem;}
+    .lightbox-counter{
+      position:absolute;bottom:1.25rem;left:50%;transform:translateX(-50%);
+      font-size:.75rem;color:rgba(255,255,255,.5);letter-spacing:.1em;
+    }
+
+    /* GALLERY */
+    .gallery-section-title{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+    .gallery-section-title::before{content:'';width:20px;height:1px;background:var(--gold);}
+
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-bottom:2rem;}
+    .gallery-item{position:relative;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--ink-card);border:1px solid var(--border);cursor:pointer;transition:all .3s var(--ease);}
+    .gallery-item:hover{border-color:rgba(232,201,125,.4);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4);}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--ease);}
+    .gallery-item:hover img{transform:scale(1.05);}
+    .gallery-item .gallery-overlay{position:absolute;inset:0;background:rgba(12,12,20,.0);display:flex;align-items:center;justify-content:center;transition:background .3s;}
+    .gallery-item:hover .gallery-overlay{background:rgba(12,12,20,.4);}
+    .gallery-overlay-icon{color:#fff;opacity:0;transform:scale(.8);transition:all .3s;}
+    .gallery-item:hover .gallery-overlay-icon{opacity:1;transform:scale(1);}
+
+    /* Empty slot (before images are added) */
+    .gallery-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:var(--text-3);font-size:.8rem;cursor:pointer;border:1.5px dashed var(--border);transition:border-color .2s,color .2s;}
+    .gallery-empty:hover{border-color:var(--gold);color:var(--gold);}
+    .gallery-empty svg{width:28px;height:28px;opacity:.5;}
+    .gallery-empty input[type=file]{display:none;}
+
+    /* Lightbox */
+    .lightbox{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:1.5rem;}
+    .lightbox.open{display:flex;}
+    .lightbox-inner{position:relative;max-width:900px;width:100%;max-height:90vh;}
+    .lightbox-img{width:100%;max-height:85vh;object-fit:contain;border-radius:var(--r);display:block;}
+    .lightbox-close{position:absolute;top:-44px;right:0;background:none;border:none;color:#fff;cursor:pointer;font-size:1.5rem;opacity:.7;transition:opacity .2s;}
+    .lightbox-close:hover{opacity:1;}
+    .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:background .2s;backdrop-filter:blur(6px);}
+    .lightbox-nav:hover{background:rgba(255,255,255,.2);}
+    .lightbox-prev{left:-56px;}
+    .lightbox-next{right:-56px;}
+    .lightbox-caption{text-align:center;margin-top:.75rem;font-size:.8rem;color:rgba(255,255,255,.5);}
+    .lightbox-counter{position:absolute;bottom:-36px;left:50%;transform:translateX(-50%);font-size:.75rem;color:rgba(255,255,255,.4);white-space:nowrap;}
+    @media(max-width:700px){.lightbox-prev{left:-2px;}.lightbox-next{right:-2px;}.lightbox-inner{padding:0 2.5rem;}}
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">AA.</a>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Portfolio
+  </a>
+  <div class="nav-actions">
+    <button id="theme-btn" aria-label="Toggle theme"><span id="t-icon">☀️</span><span id="t-label">Light</span></button>
+  </div>
+</nav>
+
+<div class="page-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Jump to project</div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-cat">🔁 Automation</div>
+      <a href="#planner-sharepoint" class="sidebar-link">Planner-to-SharePoint</a>
+      <a href="#ai-chatbot-video" class="sidebar-link">AI Chatbot & Video</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-cat">🫧 Bubble.io</div>
+      <a href="#10sync" class="sidebar-link">10Sync Platform</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-cat">⚡ Power Platform</div>
+      <a href="#service-request" class="sidebar-link">Service Request Mgmt</a>
+      <a href="#employee-self-service" class="sidebar-link">Employee Self-Service</a>
+      <a href="#it-support" class="sidebar-link">IT Support Workflow</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-cat">📊 Data Analytics</div>
+      <a href="#roi-dashboard" class="sidebar-link">ROI Dashboard</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <div class="page-header">
+      <div class="page-eyebrow">Case Studies</div>
+      <h1 class="display">All <span class="gold">Projects.</span></h1>
+      <p>A detailed breakdown of every project — tools used, features built, and outcomes delivered.</p>
+    </div>
+
+    <!-- ══════════════════════════════════
+         AUTOMATION
+    ══════════════════════════════════ -->
+    <div class="cat-section-header">
+      <span class="cat-section-title">🔁 Automation</span>
+      <div class="cat-section-line"></div>
+    </div>
+
+    <!-- PROJECT 1 -->
+    <div class="project-entry" id="planner-sharepoint">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#0d1117,#162032);">📋</div>
+        <div class="entry-meta">
+          <div class="entry-cat">Power Automate · Automation</div>
+          <h2 class="entry-title">Planner-to-SharePoint Automation</h2>
+          <div class="entry-tags">
+            <span class="e-tag">Power Automate</span>
+            <span class="e-tag">SharePoint</span>
+            <span class="e-tag">JSON</span>
+            <span class="e-tag">Microsoft 365</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Engineered a custom Power Automate solution to bridge the gap between Microsoft Planner and SharePoint — despite no native integration existing between the two platforms. The client needed task changes in Planner to automatically reflect in their SharePoint project tracking lists without manual intervention, ensuring cross-team visibility and reducing data discrepancies.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Dynamic JSON Parsing</strong>Extracted and interpreted Microsoft Planner's JSON payload to accurately detect and track task updates in real time.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Real-Time SharePoint Sync</strong>Automatically updated SharePoint lists whenever a task changed in Planner — status, assignee, due date and more.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Zero Manual Entry</strong>Eliminated all manual data entry between platforms, freeing up significant time and removing the risk of human error.</div>
+        </div>
+      </div>
+   
+      <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Streamlined cross-platform collaboration, enhanced task tracking accuracy, and significantly improved operational efficiency. The team gained real-time visibility into project progress without ever leaving their existing tools.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-planner-sharepoint">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="planner-sharepoint">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="planner-sharepoint" data-index="0">
+            <div class="gallery-placeholder">
+              <img src="planner-1.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="planner-sharepoint" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="power-1.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="planner-sharepoint" data-index="2">
+            <div class="gallery-placeholder">
+              <img src="power-2.png">
+            </div>
+          </div>
+              </div>
+      </div>
+
+     <div class="entry-actions">
+        <!-- EDIT: Replace href with actual live demo or case study URL -->
+        <a href="#" class="btn btn-gold">View Live Demo ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-entry" id="ai-chatbot-video">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#0a1a15,#0d2a22);">🤖</div>
+        <div class="entry-meta">
+          <div class="entry-cat">n8n · AI Workflows · Automation</div>
+          <h2 class="entry-title">AI Chatbot & Video Automation</h2>
+          <div class="entry-tags">
+            <span class="e-tag">n8n</span>
+            <span class="e-tag">OpenAI</span>
+            <span class="e-tag">YouTube API</span>
+            <span class="e-tag">AI Agents</span>
+            <span class="e-tag">Voice Synthesis</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Built a robust dual-purpose automation workflow using n8n that addressed two major operational inefficiencies for a client: a flood of repetitive internal queries, and a slow, manual YouTube content publishing process. The solution combined a conversational AI agent with a fully automated video production and upload pipeline.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Conversational AI Agent</strong>Integrated n8n with OpenAI to build a chatbot that answers questions about the company's mission, goals, and operations using internal documents as context.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Automated Video Pipeline</strong>Built a workflow that transcribes video content, generates AI commentary, converts it to voice, and automatically uploads the finished video to YouTube.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Internal Knowledge Access</strong>Enabled team members to instantly query internal data and get accurate, AI-powered responses — dramatically cutting down repetitive questions to management.</div>
+        </div>
+      </div>
+
+
+          <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Enhanced internal efficiency, improved access to company knowledge, and automated the entire content distribution process — from raw footage to published YouTube video — with zero manual steps required.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-ai-chatbot-video">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="ai-chatbot-video">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="ai-chatbot-video" data-index="0">
+            <div class="gallery-placeholder">
+              <div class="gallery-item gallery-placeholder-slot" data-project="planner-sharepoint" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="Planner.png">
+            </div>
+          </div>
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="ai-chatbot-video" data-index="1">
+            <div class="gallery-placeholder">
+              <div class="gallery-item gallery-placeholder-slot" data-project="planner-sharepoint" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="Agent.png">
+            </div>
+          </div>
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="ai-chatbot-video" data-index="2">
+            <div class="gallery-placeholder">
+              <div class="gallery-item gallery-placeholder-slot" data-project="planner-sharepoint" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="N8N Automation.png">
+            </div>
+          </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+          
+
+<div class="entry-actions">
+        <!-- EDIT: Replace href with actual demo URL -->
+        <a href="#" class="btn btn-gold">View Live Demo ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         BUBBLE.IO
+    ══════════════════════════════════ -->
+    <div class="cat-section-header">
+      <span class="cat-section-title">🫧 Bubble.io – App Development</span>
+      <div class="cat-section-line"></div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-entry" id="10sync">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#0f0a1f,#1a1035);">🎯</div>
+        <div class="entry-meta">
+          <div class="entry-cat">Bubble.io · Full-Stack No-Code</div>
+          <h2 class="entry-title">10Sync – Goal Alignment & Team Execution Platform</h2>
+          <div class="entry-tags">
+            <span class="e-tag">Bubble.io</span>
+            <span class="e-tag">Database Design</span>
+            <span class="e-tag">Email Automation</span>
+            <span class="e-tag">Dashboards</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Designed and developed 10Sync from scratch — a web-based goal management and team execution platform built entirely in Bubble.io. The application helps organisations align strategic objectives with team activities, ensuring that every department understands its goals and can track progress in real time. The entire data architecture, workflows, and UI were built without a single line of traditional code.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Goal & Team Assignment</strong>Structured workflow allowing organisations to create goals and assign them to specific teams with clear ownership and department visibility.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Automated Notifications</strong>Email alerts sent automatically when new goals are assigned to teams — ensuring immediate awareness without manual follow-ups.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Centralised Goal Tracking</strong>Admin and team dashboards enabling real-time monitoring of goal progress, responsibilities, and alignment with company objectives.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">04</div>
+          <div class="feature-text"><strong>Scalable Architecture</strong>Database and workflow structure designed from scratch to support multiple teams, structured goal hierarchies, and future feature expansion.</div>
+        </div>
+      </div>
+
+
+     
+
+      <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Improved strategic alignment across departments, streamlined communication between leadership and teams, and ensured goals were clearly owned and actively tracked — all within a clean, no-code application.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-10sync">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="10sync">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="10sync" data-index="0">
+            <div class="gallery-placeholder">
+              <img src="10sync 1.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="10sync" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="10sync 2.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="10sync" data-index="2">
+            <div class="gallery-placeholder">
+              <img src="10sync 3.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="10sync" data-index="3">
+            <div class="gallery-placeholder">
+              <img src="10sync4.png">
+            </div>
+          </div>
+                  </div>
+      </div>
+
+      
+    
+
+<div class="entry-actions">
+        <!-- EDIT: Replace href with live 10Sync URL -->
+        <a href="#" class="btn btn-gold">View Live App ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         POWER PLATFORM
+    ══════════════════════════════════ -->
+    <div class="cat-section-header">
+      <span class="cat-section-title">⚡ Power Platform – Operational Efficiency</span>
+      <div class="cat-section-line"></div>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="project-entry" id="service-request">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#0d1a2a,#122240);">🔧</div>
+        <div class="entry-meta">
+          <div class="entry-cat">Power Apps · Power Automate · Operations</div>
+          <h2 class="entry-title">Service Request Management System</h2>
+          <div class="entry-tags">
+            <span class="e-tag">Power Apps</span>
+            <span class="e-tag">SharePoint</span>
+            <span class="e-tag">Dataverse</span>
+            <span class="e-tag">Power Automate</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Developed a powerful Power Platform application to revolutionise the service request tracking system for a client. The existing process was manual, slow, and lacked visibility — technicians were assigned ad hoc, customers had no way to track their requests, and data lived in spreadsheets. This solution replaced all of that with a centralised, automated system.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Efficient Technician Assignment</strong>Automated assignment of technicians to customer requests based on availability — optimising resource allocation without manual scheduling.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Real-Time Request Tracking</strong>Dynamic visibility into the location and status of all active service requests, accessible to both customers and the operations team.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Centralised Data Management</strong>SharePoint Lists and Dataverse used for secure, scalable, and easily accessible data storage across the entire service workflow.</div>
+        </div>
+      </div>
+
+
+     
+
+      <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Significantly streamlined operations, enhanced customer satisfaction through better transparency, and improved overall data management efficiency. The client moved from spreadsheets to a fully automated, professional system.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-service-request">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="service-request">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="service-request" data-index="0">
+            <div class="gallery-placeholder">
+              <img src="Wireframe.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="service-request" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="ACME.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="service-request" data-index="2">
+            <div class="gallery-placeholder">
+              <img src="ACME1.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="service-request" data-index="3">
+            <div class="gallery-placeholder">
+              <img src="ACME2.png">
+            </div>
+          </div>
+                 </div>
+      </div>
+
+    
+
+<div class="entry-actions">
+        <!-- EDIT: Replace href with actual project URL -->
+        <a href="#" class="btn btn-gold">View Live Demo ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 5 -->
+    <div class="project-entry" id="employee-self-service">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#1a0d0d,#2a1515);">👤</div>
+        <div class="entry-meta">
+          <div class="entry-cat">Power Apps · HR Operations</div>
+          <h2 class="entry-title">Employee Self-Service Application</h2>
+          <div class="entry-tags">
+            <span class="e-tag">Power Apps</span>
+            <span class="e-tag">SharePoint</span>
+            <span class="e-tag">HR Integration</span>
+            <span class="e-tag">Admin Dashboard</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Developed a comprehensive self-service application to streamline internal HR operations and enhance employee experience across the organisation. Previously, employees relied on email chains and manual forms for routine HR tasks. This application consolidated everything into a single, intuitive platform — accessible to all staff levels.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Leave Request System</strong>Employees can submit, track, and manage leave requests directly in the app — with real-time approval status visible at all times.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Document Management</strong>Integrated folder system for organising and accessing company documents — eliminating email attachment chains and lost files.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Employee Profile Management</strong>Each employee can update and maintain their personal and professional profile from within the app, keeping HR records current.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">04</div>
+          <div class="feature-text"><strong>Admin HR Dashboard</strong>A dedicated dashboard giving HR teams complete oversight — managing requests, monitoring updates, and tracking app-wide usage.</div>
+        </div>
+      </div>
+
+
+     
+
+      <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Tailored to address the diverse needs of all employees. The solution drastically reduced HR admin workload, improved employee autonomy, and created a single source of truth for all internal HR activity.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-employee-self-service">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="employee-self-service">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="employee-self-service" data-index="0">
+            <div class="gallery-placeholder">
+              <img src="self1.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="employee-self-service" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="self3.jpg">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="employee-self-service" data-index="2">
+            <div class="gallery-placeholder">
+              <img src="self4.jpg">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="employee-self-service" data-index="3">
+            <div class="gallery-placeholder">
+              <img src="self2.png">
+            </div>
+          </div>
+                  </div>
+      </div>
+
+     
+<div class="entry-actions">
+        <!-- EDIT: Replace href with actual project URL -->
+        <a href="#" class="btn btn-gold">View Live Demo ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 6 -->
+    <div class="project-entry" id="it-support">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#0a150a,#112211);">💻</div>
+        <div class="entry-meta">
+          <div class="entry-cat">Power Apps · IT Operations</div>
+          <h2 class="entry-title">IT Support Workflow Application</h2>
+          <div class="entry-tags">
+            <span class="e-tag">Power Apps</span>
+            <span class="e-tag">IT Operations</span>
+            <span class="e-tag">Manager Dashboard</span>
+            <span class="e-tag">Role-Based Access</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Designed and deployed an IT Support Request Application to transform the internal employee support experience. The previous process involved email submissions with no tracking, no visibility, and no accountability. This application brought structure, transparency, and efficiency to the entire IT support workflow — from ticket submission to resolution.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Seamless Request Submission</strong>Clean, user-friendly interface for employees to submit IT support requests — eliminating manual forms and email threads entirely.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Transparent Status Tracking</strong>Employees can monitor the real-time status of their submitted requests — from received, to in-progress, to resolved.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Line Manager Dashboard</strong>Secure, credential-based dashboard giving IT managers a tailored view of all active tickets, team workload, and operational insights.</div>
+        </div>
+      </div>
+
+
+     
+
+      <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Transformed the IT support process from a chaotic email inbox into a structured, visible, and accountable system — fostering efficiency, transparency, and secure access for all stakeholders involved.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-it-support">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="it-support">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="it-support" data-index="0">
+            <div class="gallery-placeholder">
+              <img src="Home1.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="it-support" data-index="1">
+            <div class="gallery-placeholder">
+              <img src="Home2.png">
+            </div>
+          </div>
+          <div class="gallery-item gallery-placeholder-slot" data-project="it-support" data-index="2">
+            <div class="gallery-placeholder">
+              <img src="Home3.png">
+            </div>
+          </div>
+                  </div>
+      </div>
+
+    
+
+<div class="entry-actions">
+        <!-- EDIT: Replace href with actual project URL -->
+        <a href="#" class="btn btn-gold">View Live Demo ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         DATA ANALYTICS
+    ══════════════════════════════════ -->
+    <div class="cat-section-header">
+      <span class="cat-section-title">📊 Data Analytics</span>
+      <div class="cat-section-line"></div>
+    </div>
+
+    <!-- PROJECT 7 -->
+    <div class="project-entry" id="roi-dashboard">
+      <div class="entry-header">
+        <div class="entry-icon" style="background:linear-gradient(135deg,#131a0d,#1f2a10);">📈</div>
+        <div class="entry-meta">
+          <div class="entry-cat">Power BI · Data Analytics</div>
+          <h2 class="entry-title">ROI Analysis Dashboard</h2>
+          <div class="entry-tags">
+            <span class="e-tag">Power BI</span>
+            <span class="e-tag">ROI Analysis</span>
+            <span class="e-tag">Data Strategy</span>
+            <span class="e-tag">Business Intelligence</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="entry-overview">
+        Leveraged data analytics expertise to design and implement a comprehensive ROI Analysis Dashboard, focusing on identifying the key factors impacting a company's business performance. The client needed to move beyond gut-feel decisions and into data-driven strategy — this dashboard gave them exactly that.
+      </p>
+
+      <div class="entry-section-title">Key Features</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-num">01</div>
+          <div class="feature-text"><strong>Behavioural Insights</strong>In-depth analysis of customer behaviour to pinpoint the critical areas where improvements would have the highest ROI impact.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">02</div>
+          <div class="feature-text"><strong>Strategic Recommendations</strong>Delivered clear, actionable insights directly to stakeholders — translating complex data into straightforward business decisions.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-num">03</div>
+          <div class="feature-text"><strong>Quantifiable Results</strong>Targeted interventions informed by the dashboard directly contributed to a measurable 10% boost in ROI for a key initiative.</div>
+        </div>
+      </div>
+
+
+     
+
+      <div class="entry-section-title">Outcome</div>
+      <div class="outcome-bar">
+        <strong>Result:</strong> Boosted ROI by <strong>10%</strong> for a key business initiative. The dashboard became the client's go-to tool for performance review, demonstrating a strong ability to translate complex data into strategic, measurable business growth.
+      </div>
+
+      
+      <div class="gallery-section" id="gallery-roi-dashboard">
+        <div class="entry-section-title">Gallery</div>
+        <div class="gallery-grid" data-gallery="roi-dashboard">
+          <!-- Placeholder slots — will be replaced when images are uploaded -->
+          <div class="gallery-item gallery-placeholder-slot" data-project="roi-dashboard" data-index="0">
+            <div class="gallery-placeholder">
+              <img src="Dashboard.png">
+            </div>
+          </div>
+                            </div>
+      </div>
+
+      
+
+<div class="entry-actions">
+        <!-- EDIT: Replace href with actual dashboard demo URL -->
+        <a href="#" class="btn btn-gold">View Dashboard ↗</a>
+        <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Theme toggle
+  const html=document.documentElement;
+  const tBtn=document.getElementById('theme-btn');
+  const tIcon=document.getElementById('t-icon');
+  const tLabel=document.getElementById('t-label');
+  function applyTheme(t){html.setAttribute('data-theme',t);tIcon.textContent=t==='dark'?'☀️':'🌙';tLabel.textContent=t==='dark'?'Light':'Dark';}
+  applyTheme(localStorage.getItem('theme')||'dark');
+  tBtn.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';localStorage.setItem('theme',n);applyTheme(n);});
+
+  // Active sidebar link on scroll
+  const entries=document.querySelectorAll('.project-entry');
+  const sideLinks=document.querySelectorAll('.sidebar-link');
+  const sio=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        sideLinks.forEach(l=>l.classList.remove('active'));
+        const active=document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  entries.forEach(e=>sio.observe(e));
+
+  // Smooth scroll offset for anchor links from index.html
+  if(window.location.hash){
+    setTimeout(()=>{
+      const el=document.querySelector(window.location.hash);
+      if(el){const y=el.getBoundingClientRect().top+window.scrollY-88;window.scrollTo({top:y,behavior:'smooth'});}
+    },100);
+  }
+</script>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lb-close">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <img class="lightbox-img" id="lb-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lb-next">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <div class="lightbox-counter" id="lb-counter"></div>
+</div>
+
+<script>
+  // ── Gallery upload ──────────────────────────────────────────────────────
+  // Stores images per project: { projectId: [dataURL, ...] }
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Populate galleries object from HTML
+  document.querySelectorAll('.gallery-grid').forEach(grid => {
+    const projectId = grid.dataset.gallery;
+    galleries[projectId] = Array.from(
+      grid.querySelectorAll('.gallery-placeholder img')
+    ).map(img => img.src);
+  });
+
+  // 2. Wire clicks
+  document.querySelectorAll('.gallery-item.gallery-placeholder-slot').forEach(item => {
+    item.addEventListener('click', () => {
+      const projectId = item.dataset.project;
+      const index = parseInt(item.dataset.index);
+      openLightbox(projectId, index);
+    });
+  });
+});
+  // Define your images per project BEFORE renderGallery runs
+const galleries = {
+  "project-1": [
+    "planner-1.png",
+    "power-1.png",
+    "power-2.png"
+  ],
+  "project-2": [
+    "Planner.png",
+    "Agent.png",
+    "N8N Automation.png"
+  ],
+    "project-3": [
+    "10sync 1.png",
+    "10Sync 2.png",
+    "10Sync 3.png",
+    "10sync4.png"
+  ],
+  "project-4": [
+    "Wireframe.png",
+    "ACME.png",
+    "ACME1.png",
+    "ACME2.png",
+  ],
+  "project-5": [
+    "self1.png",
+    "self2.png",
+    "self3.jpg",
+    "self4.jpg"
+  ],
+  "project-6": [
+    "Home1.png",
+    "Home2.png",
+    "Home3.png"
+  ],
+  "project-7": [
+    "Dashboard.png"
+  ]
+};
+
+// Then call renderGallery for each project on page load
+document.addEventListener('DOMContentLoaded', () => {
+  ["project-1", "project-2"].forEach(id => renderGallery(id));
+});
+
+  function renderGallery(projectId) {
+    const grid = document.querySelector(`.gallery-grid[data-gallery="${projectId}"]`);
+    if (!grid) return;
+    const imgs = galleries[projectId] || [];
+    // Remove real items and placeholder slots
+    grid.querySelectorAll('.gallery-real-item, .gallery-placeholder-slot').forEach(el => el.remove());
+    const addBtn = grid.querySelector('.gallery-add-btn');
+
+    if (imgs.length === 0) {
+      // Show 2 placeholder slots
+      [0,1].forEach(() => {
+        const slot = document.createElement('div');
+        slot.className = 'gallery-item gallery-placeholder-slot';
+        slot.innerHTML = `<div class="gallery-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Screenshot
+        </div>`;
+        grid.insertBefore(slot, addBtn);
+      });
+    } else {
+      imgs.forEach((src, i) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item gallery-real-item';
+        item.style.cssText = 'position:relative;aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;cursor:pointer;border:1px solid var(--border);';
+        item.innerHTML = `
+          <img src="${src}" alt="Project screenshot ${i+1}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;">
+          <div class="gallery-item-overlay" style="position:absolute;inset:0;background:rgba(12,12,20,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </div>
+          <button class="gallery-delete-btn" title="Remove" style="position:absolute;top:6px;right:6px;z-index:10;width:26px;height:26px;border-radius:50%;background:rgba(220,50,50,.85);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>`;
+
+        // hover effects
+        item.addEventListener('mouseenter', () => {
+          item.querySelector('img').style.transform = 'scale(1.05)';
+          item.querySelector('.gallery-item-overlay').style.opacity = '1';
+          item.querySelector('.gallery-delete-btn').style.opacity = '1';
+        });
+        item.addEventListener('mouseleave', () => {
+          item.querySelector('img').style.transform = '';
+          item.querySelector('.gallery-item-overlay').style.opacity = '0';
+          item.querySelector('.gallery-delete-btn').style.opacity = '0';
+        });
+
+        // open lightbox
+        item.addEventListener('click', e => {
+          if (e.target.closest('.gallery-delete-btn')) return;
+          openLightbox(projectId, i);
+        });
+
+        // delete
+        item.querySelector('.gallery-delete-btn').addEventListener('click', e => {
+          e.stopPropagation();
+          galleries[projectId].splice(i, 1);
+          renderGallery(projectId);
+        });
+
+        grid.insertBefore(item, addBtn);
+      });
+    }
+
+    // Update hint below grid
+    const section = grid.closest('.gallery-section');
+    let hint = section.querySelector('.gallery-hint');
+    if (!hint) {
+      hint = document.createElement('p');
+      hint.className = 'gallery-hint';
+      section.appendChild(hint);
+    }
+    hint.textContent = imgs.length > 0
+      ? `${imgs.length} image${imgs.length > 1 ? 's' : ''} · Click to expand · Hover to remove`
+      : 'Upload screenshots, workflow diagrams or app previews for this project';
+  }
+
+
+
+  // ── Lightbox ────────────────────────────────────────────────────────────
+  let lbProject = null;
+  let lbIndex = 0;
+
+  function openLightbox(projectId, index) {
+    lbProject = projectId;
+    lbIndex = index;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateLightbox() {
+    const imgs = galleries[lbProject] || [];
+    const lbImgEl = document.getElementById('lb-img');
+    // fade out/in for smooth transition
+    lbImgEl.style.opacity = '0';
+    setTimeout(() => {
+      lbImgEl.src = imgs[lbIndex];
+      lbImgEl.style.opacity = '1';
+    }, 150);
+    document.getElementById('lb-counter').textContent = `${lbIndex + 1} / ${imgs.length}`;
+    document.getElementById('lb-prev').style.opacity = lbIndex === 0 ? '0.35' : '1';
+    document.getElementById('lb-next').style.opacity = lbIndex === imgs.length - 1 ? '0.35' : '1';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  });
+  document.getElementById('lb-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    const imgs = galleries[lbProject] || [];
+    if (lbIndex > 0) { lbIndex--; updateLightbox(); }
+  });
+  document.getElementById('lb-next').addEventListener('click', e => {
+    e.stopPropagation();
+    const imgs = galleries[lbProject] || [];
+    if (lbIndex < imgs.length - 1) { lbIndex++; updateLightbox(); }
+  });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click();
+    if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
+  });
+</script>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lb-close">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lb-prev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></button>
+    <button class="lightbox-nav lightbox-next" id="lb-next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    <img class="lightbox-img" id="lb-img" src="" alt="">
+    <div class="lightbox-counter" id="lb-counter"></div>
+  </div>
+</div>
+
+<script>
+  // ── Gallery upload ──────────────────────────────────────────────────────
+  
+
+  // ── Lightbox ────────────────────────────────────────────────────────────
+  let lbImages = [];
+  let lbIndex  = 0;
+
+  function openLightbox(galleryId, clickedItem){
+    const gallery = document.getElementById('gallery-' + galleryId);
+    const items   = Array.from(gallery.querySelectorAll('.gallery-item:not(.gallery-empty)'));
+    lbImages = items.map(i => i.querySelector('img').src);
+    lbIndex  = items.indexOf(clickedItem);
+    showLightboxImage();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLightboxImage(){
+    document.getElementById('lb-img').src     = lbImages[lbIndex];
+    document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+  }
+
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', e => { if(e.target === document.getElementById('lightbox')) closeLightbox(); });
+  document.getElementById('lb-prev').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLightboxImage(); });
+  document.getElementById('lb-next').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex + 1) % lbImages.length; showLightboxImage(); });
+
+  document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape')       closeLightbox();
+    if(e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLightboxImage(); }
+    if(e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLightboxImage(); }
+  });
+
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+</script>
+
+</body>
+</html>

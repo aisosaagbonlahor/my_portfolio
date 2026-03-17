@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aisosa Agbonlahor — Automation Engineer & Bubble.io Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:#0c0c14;--ink-soft:#1a1a28;--ink-card:#14141f;
+      --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);
+      --border:rgba(255,255,255,0.08);--border-hi:rgba(255,255,255,0.16);
+      --text:#eeeef5;--text-2:#9090b0;--text-3:#5a5a75;
+      --gold:#e8c97d;--gold-dim:#b89a50;--teal:#4dd9c0;--teal-dim:#2aa88f;
+      --nav-blur:rgba(12,12,20,0.9);
+      --r:14px;--r-lg:20px;--ease:cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="light"]{
+      --ink:#f4f4fc;--ink-soft:#e8e8f5;--ink-card:#ffffff;
+      --glass:rgba(0,0,0,0.03);--glass2:rgba(0,0,0,0.05);
+      --border:rgba(0,0,0,0.08);--border-hi:rgba(0,0,0,0.15);
+      --text:#0c0c14;--text-2:#4a4a65;--text-3:#9090aa;
+      --nav-blur:rgba(244,244,252,0.92);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--text);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s;}
+    a{text-decoration:none;color:inherit;}
+    img{display:block;max-width:100%;}
+    ul{list-style:none;}
+
+    /* grain */
+    body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;
+      background:var(--nav-blur);backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;padding:0 clamp(1.5rem,5vw,4rem);gap:2rem;
+      transition:background .4s;}
+    .nav-logo{font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;color:var(--gold);flex-shrink:0;}
+    .nav-links{display:flex;gap:2rem;margin-left:auto;}
+    .nav-links a{font-size:.82rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);position:relative;transition:color .25s;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:100%;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .3s var(--ease);}
+    .nav-links a:hover{color:var(--text);}
+    .nav-links a:hover::after{transform:scaleX(1);transform-origin:left;}
+    .nav-actions{display:flex;align-items:center;gap:.75rem;}
+    #theme-btn{background:var(--glass2);border:1px solid var(--border);border-radius:50px;padding:5px 14px 5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text-2);font-size:.8rem;font-family:inherit;transition:border-color .2s,color .2s;}
+    #theme-btn:hover{border-color:var(--gold);color:var(--text);}
+    #hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+    #hamburger span{width:22px;height:1.5px;background:var(--text);display:block;border-radius:2px;transition:transform .3s,opacity .3s;}
+    .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:199;
+      background:var(--nav-blur);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);
+      padding:1.5rem clamp(1.5rem,5vw,4rem);flex-direction:column;gap:1.25rem;}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);}
+
+    /* HELPERS */
+    .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+    .section{padding:100px 0;position:relative;z-index:1;}
+    .eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:1rem;}
+    .eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);}
+    .display{font-family:'Playfair Display',serif;font-weight:800;line-height:1.1;letter-spacing:-.025em;}
+    .gold{color:var(--gold);}
+    .teal{color:var(--teal);}
+
+    /* Reveal */
+    .js-ready .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease);}
+    .js-ready .reveal.in{opacity:1;transform:none;}
+    .js-ready .d1{transition-delay:.1s;}.js-ready .d2{transition-delay:.2s;}.js-ready .d3{transition-delay:.3s;}.js-ready .d4{transition-delay:.4s;}
+    .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:50px;font-size:.85rem;font-weight:600;letter-spacing:.04em;cursor:pointer;border:none;transition:all .3s var(--ease);}
+    .btn-gold{background:var(--gold);color:#0c0c14;box-shadow:0 4px 20px rgba(232,201,125,.25);}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,201,125,.4);}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi);}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+
+    /* HERO */
+    #hero{min-height:100vh;display:flex;align-items:center;padding-top:64px;position:relative;overflow:hidden;}
+    .hero-grid{position:absolute;inset:0;z-index:0;
+      background-image:linear-gradient(rgba(232,201,125,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,201,125,.04) 1px,transparent 1px);
+      background-size:60px 60px;
+      mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);}
+    .hero-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
+    .orb-a{width:500px;height:500px;top:-150px;right:-100px;background:rgba(232,201,125,.12);animation:drift 12s ease-in-out infinite;}
+    .orb-b{width:350px;height:350px;bottom:0;left:-80px;background:rgba(77,217,192,.1);animation:drift 9s ease-in-out infinite reverse;}
+    @keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-30px) scale(1.08);}}
+    .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+    .hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:50px;border:1px solid rgba(232,201,125,.3);background:rgba(232,201,125,.06);font-size:.75rem;font-weight:600;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp .8s .1s var(--ease) both;}
+    .hero-kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .hero-name{font-size:clamp(3rem,6vw,5.5rem);margin-bottom:.4rem;animation:fadeUp .8s .2s var(--ease) both;}
+    .hero-role{font-size:clamp(1rem,2vw,1.3rem);color:var(--text-2);font-weight:300;margin-bottom:1.5rem;animation:fadeUp .8s .3s var(--ease) both;}
+    .hero-role strong{color:var(--teal);font-weight:600;}
+    .hero-desc{font-size:1.05rem;color:var(--text-2);max-width:480px;line-height:1.8;margin-bottom:2.5rem;animation:fadeUp .8s .4s var(--ease) both;}
+    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .8s .5s var(--ease) both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+    .hero-visual{animation:fadeUp .8s .6s var(--ease) both;}
+    .hero-card{background:var(--ink-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;}
+    .hero-card-tag{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+    .hero-card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem;}
+    .hero-card-desc{font-size:.82rem;color:var(--text-2);line-height:1.6;}
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:var(--r);overflow:hidden;margin-top:1.5rem;}
+    .stat-cell{background:var(--ink-card);padding:1.2rem 1rem;text-align:center;}
+    .stat-n{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:800;color:var(--gold);line-height:1;}
+    .stat-l{font-size:.72rem;color:var(--text-3);margin-top:4px;letter-spacing:.05em;}
+    .ticker-bar{position:absolute;bottom:0;left:0;right:0;border-top:1px solid var(--border);overflow:hidden;padding:12px 0;background:rgba(12,12,20,.5);}
+    .ticker-track{display:flex;gap:2.5rem;width:max-content;animation:scroll 30s linear infinite;}
+    .ticker-item{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);white-space:nowrap;display:flex;align-items:center;gap:2.5rem;}
+    .ticker-item::after{content:'✦';color:var(--gold);font-size:.6rem;}
+    @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+    /* ABOUT */
+    #about{background:var(--ink-soft);}
+    .about-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:5rem;align-items:center;}
+    .about-photo-frame{position:relative;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;background:var(--ink-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;}
+    
+    .photo-placeholder{font-size:6rem;position:relative;z-index:1;}
+    .about-corner{position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;background:rgba(12,12,20,.85);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;display:flex;align-items:center;gap:10px;}
+    .about-corner-dot{width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;box-shadow:0 0 12px var(--teal);animation:blink 2s ease-in-out infinite;}
+    .about-corner-text{font-size:.78rem;color:var(--text-2);line-height:1.4;}
+    .about-corner-text strong{color:var(--text);display:block;font-size:.85rem;}
+    .about-content h2{font-size:clamp(2rem,4vw,3rem);margin-bottom:1.5rem;}
+    .about-bio{color:var(--text-2);font-size:1rem;margin-bottom:2rem;line-height:1.85;}
+    .about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2.5rem;}
+    .a-tag{padding:5px 14px;border-radius:50px;font-size:.75rem;font-weight:600;background:var(--glass2);border:1px solid var(--border);color:var(--text-2);}
+
+    /* SKILLS */
+    #skills{background:var(--ink);}
+    .skills-intro{color:var(--text-2);max-width:500px;margin-bottom:3rem;}
+    .skills-categories{display:flex;flex-direction:column;gap:3rem;}
+    .skill-cat-label{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+    .skill-cat-label::before{content:'';width:20px;height:1px;background:var(--teal);}
+    .skill-pills{display:flex;flex-wrap:wrap;gap:.75rem;}
+    .skill-pill{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:var(--r);background:var(--ink-card);border:1px solid var(--border);font-size:.85rem;font-weight:500;color:var(--text);transition:all .3s var(--ease);cursor:default;}
+    .skill-pill:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 25px rgba(232,201,125,.12);}
+    .skill-pill-icon{font-size:1.1rem;}
+
+    /* PROJECTS */
+    #projects{background:var(--ink-soft);}
+    .projects-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;flex-wrap:wrap;gap:1.5rem;}
+    .project-category{margin-bottom:4rem;}
+    .cat-divider{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;}
+    .cat-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;white-space:nowrap;}
+    .cat-line{flex:1;height:1px;background:var(--border);}
+    .cat-count{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--text-3);white-space:nowrap;}
+    .project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;}
+    .p-card{background:var(--ink-card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;transition:all .35s var(--ease);}
+    .p-card:hover{border-color:rgba(232,201,125,.35);transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.3),0 0 0 1px rgba(232,201,125,.1);}
+    .p-thumb{height:170px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .p-thumb-icon{font-size:3.2rem;position:relative;z-index:1;}
+    .p-thumb-bg{position:absolute;inset:0;}
+    .p-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;}
+    .p-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.9rem;}
+    .p-tag{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;background:rgba(77,217,192,.1);border:1px solid rgba(77,217,192,.2);color:var(--teal);}
+    .p-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.6rem;line-height:1.3;}
+    .p-desc{font-size:.875rem;color:var(--text-2);flex:1;margin-bottom:1.5rem;line-height:1.7;}
+    .p-footer{border-top:1px solid var(--border);padding-top:1.1rem;display:flex;align-items:center;justify-content:space-between;}
+    .p-link{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--gold);transition:gap .2s;}
+    .p-link:hover{gap:10px;}
+    .p-link svg{width:13px;height:13px;}
+    .p-source{font-size:.7rem;color:var(--text-3);}
+    .p-bullets{padding-left:0;margin-bottom:1rem;}
+    .p-bullets li{font-size:.82rem;color:var(--text-2);line-height:1.6;padding:3px 0 3px 1.2rem;position:relative;}
+    .p-bullets li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:.7rem;top:5px;}
+
+    /* CONTACT */
+    #contact{background:var(--ink);}
+    .contact-box{max-width:680px;margin:0 auto;text-align:center;}
+    .contact-box h2{font-size:clamp(2rem,4vw,3rem);margin-bottom:1.2rem;}
+    .contact-box p{color:var(--text-2);margin-bottom:2rem;font-size:1.05rem;}
+    .contact-email{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:700;color:var(--gold);display:block;margin-bottom:2.5rem;transition:opacity .2s;}
+    .contact-email:hover{opacity:.7;}
+    .contact-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+    /* FOOTER */
+    footer{background:var(--ink-soft);border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:relative;z-index:1;}
+    .footer-logo{font-family:'Playfair Display',serif;font-weight:900;color:var(--gold);font-size:1.1rem;}
+    .footer-note{font-size:.78rem;color:var(--text-3);}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-visual{display:none;}.about-grid{grid-template-columns:1fr;}.about-photo-frame{max-width:300px;}}
+    @media(max-width:680px){.nav-links{display:none;}#hamburger{display:flex;}.project-grid{grid-template-columns:1fr;}.stat-row{grid-template-columns:1fr;}.projects-header{flex-direction:column;}footer{flex-direction:column;text-align:center;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">AA.</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button id="theme-btn" aria-label="Toggle theme"><span id="t-icon">☀️</span><span id="t-label">Light</span></button>
+    <button id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mob-menu">
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#skills" onclick="closeMob()">Skills</a>
+  <a href="#projects" onclick="closeMob()">Projects</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb-a"></div>
+  <div class="hero-orb orb-b"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-kicker">Available for Freelance</div>
+        <h1 class="hero-name display">Aisosa<br><span class="gold">Agbonlahor</span></h1>
+        <p class="hero-role">Automation Engineer &amp; <strong>Bubble.io Developer</strong></p>
+        <p class="hero-desc">I transform complex, manual business processes into elegant automated systems — building no-code apps on Bubble, orchestrating workflows with Power Automate, Make &amp; n8n, and shipping AI-powered solutions that scale.</p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn btn-gold">View My Work <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <!-- EDIT: Replace with your Upwork profile URL -->
+          <a href="https://www.upwork.com/freelancers/~yourprofile" target="_blank" rel="noopener" class="btn btn-ghost">Upwork Profile ↗</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-card-tag">Latest Project</div>
+          <h3 class="hero-card-title">AI Chatbot &amp; Video Automation</h3>
+          <p class="hero-card-desc">n8n + OpenAI pipeline — automated internal knowledge base chatbot and full YouTube video production workflow.</p>
+          <div class="stat-row">
+            <!-- EDIT: Update with your real stats -->
+            <div class="stat-cell"><div class="stat-n">40+</div><div class="stat-l">Projects</div></div>
+            <div class="stat-cell"><div class="stat-n">25+</div><div class="stat-l">Clients</div></div>
+            <div class="stat-cell"><div class="stat-n">3+</div><div class="stat-l">Years</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ticker-bar">
+    <div class="ticker-track">
+      <span class="ticker-item">Bubble.io</span><span class="ticker-item">Power Automate</span><span class="ticker-item">n8n</span><span class="ticker-item">Make (Integromat)</span><span class="ticker-item">AI Workflows</span><span class="ticker-item">SharePoint</span><span class="ticker-item">Data Analytics</span><span class="ticker-item">API Integrations</span>
+      <span class="ticker-item">Bubble.io</span><span class="ticker-item">Power Automate</span><span class="ticker-item">n8n</span><span class="ticker-item">Make (Integromat)</span><span class="ticker-item">AI Workflows</span><span class="ticker-item">SharePoint</span><span class="ticker-item">Data Analytics</span><span class="ticker-item">API Integrations</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="wrap">
+    <div class="about-grid">
+      <div style="position:relative;">
+        <div class="about-photo-frame reveal">
+          <img id="profile-img" src="Aisosa.png" alt="Aisosa Agbonlahor" style="display:flex;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2;">
+                <div class="about-corner">
+            <div class="about-corner-dot"></div>
+            <div class="about-corner-text"><strong>Open to new projects</strong>Automation · Bubble.io · AI Workflows</div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="about-content">
+        <div class="eyebrow reveal">About Me</div>
+        <h2 class="display reveal d1">Engineering the<br>future of <span class="gold">work.</span></h2>
+        <p class="about-bio reveal d2">I'm Aisosa Agbonlahor — an Automation Engineer and Bubble.io Developer passionate about eliminating inefficiency through smart, scalable systems. From building full no-code applications to orchestrating cross-platform automation workflows with AI at the core, I deliver solutions that genuinely move the needle. I've worked across industries helping teams reclaim hours, reduce errors, and make better decisions with data.</p>
+        <div class="about-tags reveal d3">
+          <span class="a-tag">Bubble.io</span><span class="a-tag">Power Automate</span><span class="a-tag">n8n</span><span class="a-tag">OpenAI APIs</span><span class="a-tag">Make</span><span class="a-tag">SharePoint</span><span class="a-tag">Power Apps</span><span class="a-tag">Data Analytics</span>
+        </div>
+        <div class="hero-btns reveal d4">
+          <a href="#contact" class="btn btn-gold">Get In Touch</a>
+          <!-- EDIT: Replace with your Upwork profile URL -->
+          <a href="https://www.upwork.com/freelancers/~yourprofile" target="_blank" rel="noopener" class="btn btn-ghost">Hire on Upwork ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <div class="wrap">
+    <div class="eyebrow reveal">Skills & Tools</div>
+    <h2 class="display reveal d1" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">The full <span class="gold">stack.</span></h2>
+    <p class="skills-intro reveal d2">A versatile toolkit built across no-code development, workflow automation, AI integration, and business intelligence.</p>
+    <div class="skills-categories">
+      <div class="reveal">
+        <div class="skill-cat-label">No-Code Development</div>
+        <div class="skill-pills">
+          <div class="skill-pill"><span class="skill-pill-icon">🫧</span> Bubble.io</div>
+          <div class="skill-pill"><span class="skill-pill-icon">📊</span> Power Apps</div>
+          <div class="skill-pill"><span class="skill-pill-icon">📋</span> SharePoint</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🗄️</span> Dataverse</div>
+        </div>
+      </div>
+      <div class="reveal d1">
+        <div class="skill-cat-label">Automation & Workflow</div>
+        <div class="skill-pills">
+          <div class="skill-pill"><span class="skill-pill-icon">⚡</span> Power Automate</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🌿</span> n8n</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🔧</span> Make (Integromat)</div>
+          <div class="skill-pill"><span class="skill-pill-icon">⚙️</span> Zapier</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🔗</span> REST APIs</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🔐</span> Webhooks</div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="skill-cat-label">AI & Intelligence</div>
+        <div class="skill-pills">
+          <div class="skill-pill"><span class="skill-pill-icon">🤖</span> OpenAI API</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🧠</span> AI Chatbot Design</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🎬</span> Video AI Pipelines</div>
+          <div class="skill-pill"><span class="skill-pill-icon">📑</span> Document AI</div>
+        </div>
+      </div>
+      <div class="reveal d3">
+        <div class="skill-cat-label">Data & Analytics</div>
+        <div class="skill-pills">
+          <div class="skill-pill"><span class="skill-pill-icon">📈</span> Power BI</div>
+          <div class="skill-pill"><span class="skill-pill-icon">📊</span> Excel / Google Sheets</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🔍</span> ROI Analysis</div>
+          <div class="skill-pill"><span class="skill-pill-icon">🗂️</span> Dashboard Design</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="wrap">
+    <div class="projects-header">
+      <div>
+        <div class="eyebrow reveal">Portfolio</div>
+        <h2 class="display reveal d1" style="font-size:clamp(2rem,4vw,3rem);">Selected <span class="gold">work.</span></h2>
+      </div>
+      <!-- EDIT: Replace with your Upwork URL -->
+      <a href="https://www.upwork.com/freelancers/~yourprofile" target="_blank" rel="noopener" class="btn btn-ghost reveal">View Upwork Profile ↗</a>
+    </div>
+
+    <!-- AUTOMATION -->
+    <div class="project-category reveal">
+      <div class="cat-divider"><h3 class="cat-title">🔁 Automation</h3><div class="cat-line"></div><span class="cat-count">2 projects</span></div>
+      <div class="project-grid">
+        <div class="p-card reveal">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#0d1117,#162032);"></div><div class="p-thumb-icon">📋</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">Power Automate</span><span class="p-tag">SharePoint</span><span class="p-tag">JSON</span></div>
+            <h3 class="p-title">Planner-to-SharePoint Automation</h3>
+            <p class="p-desc">Custom Power Automate solution bridging Microsoft Planner and SharePoint — no native integration existed.</p>
+            <ul class="p-bullets">
+              <li>Dynamic JSON parsing of Planner task data for accurate tracking</li>
+              <li>Real-time SharePoint sync triggered by any Planner change</li>
+              <li>Eliminated all manual data entry across both platforms</li>
+            </ul>
+            <div class="p-footer">
+              <!-- EDIT: Replace href with actual project link or case study -->
+              <a href="projects.html#planner-sharepoint" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Client Project</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-card reveal d1">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#0a1a15,#0d2a22);"></div><div class="p-thumb-icon">🤖</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">n8n</span><span class="p-tag">OpenAI</span><span class="p-tag">YouTube API</span></div>
+            <h3 class="p-title">AI Chatbot &amp; Video Automation</h3>
+            <p class="p-desc">n8n workflow automating internal knowledge access and YouTube publishing end-to-end using AI.</p>
+            <ul class="p-bullets">
+              <li>AI chatbot answers company questions from internal data via OpenAI</li>
+              <li>Full pipeline: transcribe → AI commentary → voice → YouTube upload</li>
+              <li>Slashed repetitive queries and content upload time drastically</li>
+            </ul>
+            <div class="p-footer">
+              <!-- EDIT: Replace href with actual demo URL -->
+              <a href="projects.html#ai-chatbot-video" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Client Project</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUBBLE -->
+    <div class="project-category reveal">
+      <div class="cat-divider"><h3 class="cat-title">🫧 Bubble.io – App Development</h3><div class="cat-line"></div><span class="cat-count">1 project</span></div>
+      <div class="project-grid">
+        <div class="p-card reveal">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#0f0a1f,#1a1035);"></div><div class="p-thumb-icon">🎯</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">Bubble.io</span><span class="p-tag">Database Design</span><span class="p-tag">Email Automation</span></div>
+            <h3 class="p-title">10Sync – Goal Alignment Platform</h3>
+            <p class="p-desc">Built 10Sync from scratch — a web app helping organizations align strategic objectives with team activity across departments.</p>
+            <ul class="p-bullets">
+              <li>Goal & team assignment with clear ownership per department</li>
+              <li>Automated email notifications on new goal assignments</li>
+              <li>Admin dashboard for real-time progress tracking</li>
+              <li>Scalable DB architecture for multi-team expansion</li>
+            </ul>
+            <div class="p-footer">
+              <!-- EDIT: Replace href with live 10Sync demo URL -->
+              <a href="projects.html#10sync" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Original Build</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POWER PLATFORM -->
+    <div class="project-category reveal">
+      <div class="cat-divider"><h3 class="cat-title">⚡ Power Platform – Operational Efficiency</h3><div class="cat-line"></div><span class="cat-count">3 projects</span></div>
+      <div class="project-grid">
+        <div class="p-card reveal">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#0d1a2a,#122240);"></div><div class="p-thumb-icon">🔧</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">Power Apps</span><span class="p-tag">SharePoint</span><span class="p-tag">Dataverse</span></div>
+            <h3 class="p-title">Service Request Management System</h3>
+            <p class="p-desc">Revolutionised a client's service request tracking system with a full Power Platform application.</p>
+            <ul class="p-bullets">
+              <li>Automated technician assignment to customer requests</li>
+              <li>Real-time location and status tracking of all requests</li>
+              <li>Centralised data via SharePoint Lists and Dataverse</li>
+            </ul>
+            <div class="p-footer">
+              <a href="projects.html#service-request" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Client Project</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-card reveal d1">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#1a0d0d,#2a1515);"></div><div class="p-thumb-icon">👤</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">Power Apps</span><span class="p-tag">HR</span><span class="p-tag">SharePoint</span></div>
+            <h3 class="p-title">Employee Self-Service Application</h3>
+            <p class="p-desc">Internal self-service app streamlining HR operations and employee experience across the organisation.</p>
+            <ul class="p-bullets">
+              <li>Leave request submission and real-time tracking</li>
+              <li>Organised document management folder system</li>
+              <li>Employee profile management module</li>
+              <li>Admin HR dashboard for all requests and usage</li>
+            </ul>
+            <div class="p-footer">
+              <a href="projects.html#employee-self-service" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Client Project</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-card reveal d2">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#0a150a,#112211);"></div><div class="p-thumb-icon">💻</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">Power Apps</span><span class="p-tag">IT Operations</span><span class="p-tag">Dashboard</span></div>
+            <h3 class="p-title">IT Support Workflow Application</h3>
+            <p class="p-desc">IT support request application that transformed internal support operations and employee experience end-to-end.</p>
+            <ul class="p-bullets">
+              <li>User-friendly interface for submitting IT requests</li>
+              <li>Real-time status tracking for employees</li>
+              <li>Credential-based line manager dashboard</li>
+            </ul>
+            <div class="p-footer">
+              <a href="projects.html#it-support" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Client Project</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA ANALYTICS -->
+    <div class="project-category reveal">
+      <div class="cat-divider"><h3 class="cat-title">📊 Data Analytics</h3><div class="cat-line"></div><span class="cat-count">1 project</span></div>
+      <div class="project-grid">
+        <div class="p-card reveal">
+          <div class="p-thumb"><div class="p-thumb-bg" style="background:linear-gradient(135deg,#131a0d,#1f2a10);"></div><div class="p-thumb-icon">📈</div></div>
+          <div class="p-body">
+            <div class="p-tags"><span class="p-tag">Power BI</span><span class="p-tag">ROI Analysis</span><span class="p-tag">Data Strategy</span></div>
+            <h3 class="p-title">ROI Analysis Dashboard</h3>
+            <p class="p-desc">Designed an ROI Analysis Dashboard identifying performance factors and driving measurable business growth.</p>
+            <ul class="p-bullets">
+              <li>In-depth customer behaviour analysis for improvement areas</li>
+              <li>Actionable strategic recommendations to stakeholders</li>
+              <li>Boosted ROI by 10% for a key business initiative</li>
+            </ul>
+            <div class="p-footer">
+              <a href="projects.html#roi-dashboard" class="p-link">View Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+              <span class="p-source">Client Project</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="contact-box">
+      <div class="eyebrow reveal" style="justify-content:center;">Contact</div>
+      <h2 class="display reveal d1">Let's build<br><span class="gold">something great.</span></h2>
+      <p class="reveal d2">Got a process that needs automating? A Bubble app to build? I'm open to new projects and always happy to chat.</p>
+      <!-- EDIT: Replace with your actual email address -->
+      <a href="/cdn-cgi/l/email-protection#214048524e5240614459404c514d440f424e4c" class="contact-email reveal d3"><span class="__cf_email__" data-cfemail="ddbcb4aeb2aebc9db8a5bcb0adb1b8f3beb2b0">[email&#160;protected]</span></a>
+      <div class="contact-actions reveal d4">
+        <!-- EDIT: Replace with your actual Upwork URL -->
+        <a href="https://www.upwork.com/freelancers/~yourprofile" target="_blank" rel="noopener" class="btn btn-gold">Hire Me on Upwork ↗</a>
+        <!-- EDIT: Replace with your email -->
+        <a href="/cdn-cgi/l/email-protection#7d1c140e120e1c3d18051c100d1118531e1210" class="btn btn-ghost">Send an Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Aisosa Agbonlahor</span>
+  <span class="footer-note">© 2025 · Built without frameworks · Hosted on GitHub Pages</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  document.body.classList.add('js-ready');
+  const html=document.documentElement;
+  const tBtn=document.getElementById('theme-btn');
+  const tIcon=document.getElementById('t-icon');
+  const tLabel=document.getElementById('t-label');
+  function applyTheme(t){html.setAttribute('data-theme',t);tIcon.textContent=t==='dark'?'☀️':'🌙';tLabel.textContent=t==='dark'?'Light':'Dark';}
+  applyTheme(localStorage.getItem('theme')||'dark');
+  tBtn.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';localStorage.setItem('theme',n);applyTheme(n);});
+  const ham=document.getElementById('hamburger');
+  const mob=document.getElementById('mob-menu');
+  ham.addEventListener('click',()=>mob.classList.toggle('open'));
+  function closeMob(){mob.classList.remove('open');}
+  const revs=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0,rootMargin:'0px 0px -30px 0px'});
+  revs.forEach(r=>io.observe(r));
+  // Profile photo upload
+  const photoInput=document.getElementById('photo-input');
+  const profileImg=document.getElementById('profile-img');
+  const photoPlaceholder=document.getElementById('photo-placeholder');
+  const uploadBtn=document.getElementById('photo-upload-btn');
+  uploadBtn.addEventListener('mouseenter',()=>uploadBtn.style.transform='scale(1.1)');
+  uploadBtn.addEventListener('mouseleave',()=>uploadBtn.style.transform='scale(1)');
+  photoInput.addEventListener('change',e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      profileImg.src=ev.target.result;
+      profileImg.style.display='block';
+      photoPlaceholder.style.display='none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  const secs=document.querySelectorAll('section[id]');
+  const navAs=document.querySelectorAll('.nav-links a');
+  const sio=ne
